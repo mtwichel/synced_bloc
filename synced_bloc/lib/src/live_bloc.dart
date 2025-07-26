@@ -35,6 +35,15 @@ abstract class LiveBloc<Event, State> extends Bloc<Event, State> {
 
   static http.Client client = http.Client();
 
+  static String? _apiKey;
+
+  static set apiKey(String? apiKey) => _apiKey = apiKey;
+
+  static String get apiKey {
+    if (_apiKey == null) throw Exception('API key not found');
+    return _apiKey!;
+  }
+
   late final WebSocket socket;
   late final StreamSubscription<dynamic> subscription;
 
