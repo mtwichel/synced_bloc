@@ -1,0 +1,64 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:web_socket_client/web_socket_client.dart';
+
+class ApiClient {
+  ApiClient({
+    required this.apiKey,
+    http.Client? client,
+    required this.host,
+    required this.port,
+    required this.secure,
+  }) : client = client ?? http.Client();
+
+  final String apiKey;
+  final http.Client client;
+
+  final String host;
+  final int port;
+  final bool secure;
+
+  Uri _makeUrl(String path,
+      {String scheme = 'http', Map<String, String>? queryParameters}) {
+    return Uri(
+      scheme: secure ? '${scheme}s' : scheme,
+      host: host,
+      port: port,
+      path: path,
+      queryParameters: queryParameters,
+    );
+  }
+
+  Future<Map<String, dynamic>> fetch(String storageToken) async {
+    final response =
+        await client.get(_makeUrl('/sync/$storageToken'), headers: {
+      'x-api-key': apiKey,
+    });
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to fetch data from server');
+    }
+
+    return Map<String, dynamic>.from(jsonDecode(response.body) as Map);
+  }
+
+  Future<void> save(String storageToken,
+      {required Map<String, dynamic> data}) async {
+    final response = await client.put(_makeUrl('/sync/$storageToken'),
+        headers: {
+          'x-api-key': apiKey,
+        },
+        body: jsonEncode(data));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to save data to server');
+    }
+  }
+
+  WebSocket connect(String storageToken) {
+    final uri = _makeUrl('/subscribe/$storageToken', scheme: 'ws');
+
+    return WebSocket(uri, headers: {'x-api-key': apiKey});
+  }
+}

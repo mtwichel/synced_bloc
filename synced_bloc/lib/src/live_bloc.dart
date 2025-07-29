@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:synced_bloc/src/api_client.dart';
 import 'package:synced_bloc/src/local_storage.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 
@@ -21,27 +21,13 @@ abstract class LiveBloc<Event, State> extends Bloc<Event, State> {
     return _storage!;
   }
 
-  static bool secure = true;
-  static int? port;
+  static ApiClient? _apiClient;
 
-  static String? _serverHost;
+  static set apiClient(ApiClient? apiClient) => _apiClient = apiClient;
 
-  static set serverHost(String? serverHost) => _serverHost = serverHost;
-
-  static String get serverHost {
-    if (_serverHost == null) throw Exception('Server URL not found');
-    return _serverHost!;
-  }
-
-  static http.Client client = http.Client();
-
-  static String? _apiKey;
-
-  static set apiKey(String? apiKey) => _apiKey = apiKey;
-
-  static String get apiKey {
-    if (_apiKey == null) throw Exception('API key not found');
-    return _apiKey!;
+  static ApiClient get apiClient {
+    if (_apiClient == null) throw Exception('API client not found');
+    return _apiClient!;
   }
 
   late final WebSocket socket;
@@ -69,14 +55,7 @@ abstract class LiveBloc<Event, State> extends Bloc<Event, State> {
   }
 
   Future<void> _subscribeToRemote() async {
-    final uri = Uri(
-      scheme: secure ? 'wss' : 'ws',
-      host: serverHost,
-      port: port,
-      path: '/subscribe/$storageToken',
-    );
-    socket = WebSocket(uri);
-
+    socket = apiClient.connect(storageToken);
     subscription = socket.messages.listen((message) {
       if (message is! String) return;
       final json = jsonDecode(message) as Map<String, dynamic>;

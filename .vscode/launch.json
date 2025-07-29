@@ -11,30 +11,13 @@
       "type": "dart"
     },
     {
-      "name": "example (profile mode)",
-      "cwd": "example",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "profile"
-    },
-    {
-      "name": "example (release mode)",
-      "cwd": "example",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "release"
-    },
-    {
-      "name": "synced_bloc",
-      "cwd": "synced_bloc",
-      "request": "launch",
-      "type": "dart"
-    },
-    {
       "name": "synced_bloc_server",
       "cwd": "synced_bloc_server",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "env": {
+        "API_KEY": "test_api_key"
+      }
     }
   ]
 }

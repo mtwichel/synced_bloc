@@ -9,10 +9,10 @@ import 'package:synchronized/synchronized.dart';
 /// Interface which is used to persist and retrieve state changes.
 abstract class Storage {
   /// Returns value for key
-  dynamic read(String key);
+  Map<String, dynamic>? read(String key);
 
   /// Persists key value pair
-  Future<void> write(String key, dynamic value);
+  Future<void> write(String key, Map<String, dynamic> value);
 
   /// Deletes key value pair
   Future<void> delete(String key);
@@ -42,15 +42,15 @@ class LocalStorage implements Storage {
   }) {
     return _lock.synchronized(() async {
       hive = HiveImpl();
-      Box<dynamic> box;
+      Box<Map<String, dynamic>> box;
 
       if (storageDirectory == LocalStorageDirectory.web) {
-        box = await hive.openBox<dynamic>(
+        box = await hive.openBox<Map<String, dynamic>>(
           'synced_bloc',
         );
       } else {
         hive.init(storageDirectory.path);
-        box = await hive.openBox<dynamic>(
+        box = await hive.openBox<Map<String, dynamic>>(
           'synced_bloc',
         );
       }
@@ -66,13 +66,13 @@ class LocalStorage implements Storage {
 
   static final _lock = Lock();
 
-  final Box<dynamic> _box;
+  final Box<Map<String, dynamic>> _box;
 
   @override
-  dynamic read(String key) => _box.isOpen ? _box.get(key) : null;
+  Map<String, dynamic>? read(String key) => _box.isOpen ? _box.get(key) : null;
 
   @override
-  Future<void> write(String key, dynamic value) async {
+  Future<void> write(String key, Map<String, dynamic> value) async {
     if (_box.isOpen) {
       return _lock.synchronized(() => _box.put(key, value));
     }

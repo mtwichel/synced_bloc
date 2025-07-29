@@ -1,0 +1,40 @@
+import 'package:hive_ce/hive.dart';
+import 'package:state_storage/state_storage.dart';
+
+/// {@template hive_state_storage}
+/// A state storage using Hive.
+/// {@endtemplate}
+class HiveStateStorage implements StateStorage {
+  /// {@macro hive_state_storage}
+  HiveStateStorage({required String path}) {
+    initialize(path);
+  }
+
+  late final Box<Map<String, dynamic>> _box;
+
+  /// Initialize the Hive state storage.
+  Future<void> initialize(String path) async {
+    Hive.init(path);
+    _box = await Hive.openBox<Map<String, dynamic>>(path);
+  }
+
+  @override
+  Future<void> clear() async {
+    await _box.clear();
+  }
+
+  @override
+  Future<void> delete(String key) async {
+    await _box.delete(key);
+  }
+
+  @override
+  Future<Map<String, dynamic>?> get(String key) async {
+    return _box.get(key);
+  }
+
+  @override
+  Future<void> put(String key, Map<String, dynamic> value) async {
+    await _box.put(key, value);
+  }
+}

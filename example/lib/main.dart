@@ -7,14 +7,21 @@ import 'package:synced_bloc_example/counter_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SyncedBloc.storage = await LocalStorage.build(
+  SyncedConfig.storage = await HydratedStorage.build(
     storageDirectory:
         kIsWeb
-            ? LocalStorageDirectory.web
-            : LocalStorageDirectory((await getTemporaryDirectory()).path),
+            ? HydratedStorageDirectory.web
+            : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
-  SyncedBloc.serverHost = 'localhost:8080';
-  LiveBloc.serverHost = '192.168.1.100:8080';
+  final apiClient = ApiClient(
+    host: 'localhost',
+    port: 8080,
+    secure: false,
+    apiKey: 'test_api_key',
+  );
+  SyncedConfig.apiClient = apiClient;
+  LiveBloc.apiClient = apiClient;
+
   runApp(const MainApp());
 }
 
