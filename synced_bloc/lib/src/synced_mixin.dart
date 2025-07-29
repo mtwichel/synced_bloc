@@ -3,27 +3,26 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:synced_bloc/src/synced_config.dart';
 
 mixin SyncedMixin<State> on BlocBase<State> {
-  State? _state;
-
   Future<void> init() async {
-    final json = await SyncedConfig.apiClient.fetch(storageToken);
-    _state = fromJson(json)!;
-    // ignore: invalid_use_of_visible_for_testing_member
-    emit(_state!);
+    final json = await SyncedConfig.apiClient.fetch(
+      storageToken,
+      isPrivate: isPrivate,
+    );
+    final state = fromJson(json)!;
+    emit(state);
   }
 
   @override
   Future<void> onChange(Change<State> change) async {
     super.onChange(change);
 
-    final state = change.nextState;
-    if (state == _state) return;
-    _state = state;
-
-    final stateJson = toJson(state);
-
+    final stateJson = toJson(change.nextState);
     if (stateJson != null) {
-      await SyncedConfig.apiClient.save(storageToken, data: stateJson);
+      await SyncedConfig.apiClient.save(
+        storageToken,
+        data: stateJson,
+        isPrivate: isPrivate,
+      );
     }
   }
 
@@ -32,6 +31,8 @@ mixin SyncedMixin<State> on BlocBase<State> {
   String get storagePrefix => runtimeType.toString();
 
   String get storageToken => '$storagePrefix$id';
+
+  bool get isPrivate => false;
 
   State? fromJson(Map<String, dynamic> json);
 

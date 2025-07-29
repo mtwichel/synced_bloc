@@ -10,6 +10,7 @@ class ApiClient {
     required this.host,
     required this.port,
     required this.secure,
+    this.authenticationToken,
   }) : client = client ?? http.Client();
 
   final String apiKey;
@@ -19,8 +20,13 @@ class ApiClient {
   final int port;
   final bool secure;
 
-  Uri _makeUrl(String path,
-      {String scheme = 'http', Map<String, String>? queryParameters}) {
+  String? authenticationToken;
+
+  Uri _makeUrl(
+    String path, {
+    String scheme = 'http',
+    Map<String, String>? queryParameters,
+  }) {
     return Uri(
       scheme: secure ? '${scheme}s' : scheme,
       host: host,
@@ -30,11 +36,22 @@ class ApiClient {
     );
   }
 
-  Future<Map<String, dynamic>> fetch(String storageToken) async {
-    final response =
-        await client.get(_makeUrl('/sync/$storageToken'), headers: {
-      'x-api-key': apiKey,
-    });
+  Future<Map<String, dynamic>> fetch(
+    String storageToken, {
+    required bool isPrivate,
+  }) async {
+    if (isPrivate && authenticationToken == null) {
+      throw Exception('Authentication token is required for private data');
+    }
+
+    final response = await client.get(
+      _makeUrl('/sync/$storageToken'),
+      headers: {
+        'x-api-key': apiKey,
+        if (isPrivate && authenticationToken != null)
+          'x-authentication-token': authenticationToken!,
+      },
+    );
 
     if (response.statusCode != 200) {
       throw Exception('Failed to fetch data from server');
@@ -43,13 +60,24 @@ class ApiClient {
     return Map<String, dynamic>.from(jsonDecode(response.body) as Map);
   }
 
-  Future<void> save(String storageToken,
-      {required Map<String, dynamic> data}) async {
-    final response = await client.put(_makeUrl('/sync/$storageToken'),
-        headers: {
-          'x-api-key': apiKey,
-        },
-        body: jsonEncode(data));
+  Future<void> save(
+    String storageToken, {
+    required Map<String, dynamic> data,
+    required bool isPrivate,
+  }) async {
+    if (isPrivate && authenticationToken == null) {
+      throw Exception('Authentication token is required for private data');
+    }
+
+    final response = await client.put(
+      _makeUrl('/sync/$storageToken'),
+      headers: {
+        'x-api-key': apiKey,
+        if (isPrivate && authenticationToken != null)
+          'x-authentication-token': authenticationToken!,
+      },
+      body: jsonEncode(data),
+    );
 
     if (response.statusCode != 200) {
       throw Exception('Failed to save data to server');
