@@ -1,4 +1,4 @@
-import 'package:synced_bloc/synced_bloc.dart';
+import 'package:blocsync/blocsync.dart';
 
 class CounterBloc extends SyncedBloc<CounterEvent, int> {
   CounterBloc() : super(0) {

@@ -1,7 +1,7 @@
+import 'package:blocsync/src/api_client.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:synced_bloc/src/api_client.dart';
 
-class SyncedConfig {
+class BlocSyncConfig {
   static ApiClient? _apiClient;
 
   static set apiClient(ApiClient? apiClient) => _apiClient = apiClient;

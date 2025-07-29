@@ -11,8 +11,8 @@
       "type": "dart"
     },
     {
-      "name": "synced_bloc_server",
-      "cwd": "synced_bloc_server",
+      "name": "blocsync_server",
+      "cwd": "blocsync_server",
       "request": "launch",
       "type": "dart",
       "env": {

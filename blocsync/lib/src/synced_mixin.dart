@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:blocsync/src/blocsync_config.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:synced_bloc/src/synced_config.dart';
 
 mixin SyncedMixin<State> on BlocBase<State> {
   Future<void> init() async {
-    final json = await SyncedConfig.apiClient.fetch(
+    final json = await BlocSyncConfig.apiClient.fetch(
       storageToken,
       isPrivate: isPrivate,
     );
@@ -18,7 +18,7 @@ mixin SyncedMixin<State> on BlocBase<State> {
 
     final stateJson = toJson(change.nextState);
     if (stateJson != null) {
-      await SyncedConfig.apiClient.save(
+      await BlocSyncConfig.apiClient.save(
         storageToken,
         data: stateJson,
         isPrivate: isPrivate,

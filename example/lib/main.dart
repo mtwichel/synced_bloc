@@ -1,26 +1,23 @@
+import 'package:blocsync/blocsync.dart';
+import 'package:blocsync_example/counter_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:synced_bloc/synced_bloc.dart';
-import 'package:synced_bloc_example/counter_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SyncedConfig.storage = await HydratedStorage.build(
+  BlocSyncConfig.storage = await HydratedStorage.build(
     storageDirectory:
         kIsWeb
             ? HydratedStorageDirectory.web
             : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
-  final apiClient = ApiClient(
-    host: 'localhost',
-    port: 8080,
-    secure: false,
+
+  BlocSyncConfig.apiClient = ApiClient(
+    baseUrl: Uri.parse('http://localhost:8080'),
     apiKey: 'test_api_key',
   );
-  SyncedConfig.apiClient = apiClient;
-  LiveBloc.apiClient = apiClient;
 
   runApp(const MainApp());
 }

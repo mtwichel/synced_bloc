@@ -6,12 +6,13 @@ import 'package:web_socket_client/web_socket_client.dart';
 class ApiClient {
   ApiClient({
     required this.apiKey,
+    required Uri baseUrl,
     http.Client? client,
-    required this.host,
-    required this.port,
-    required this.secure,
     this.authenticationToken,
-  }) : client = client ?? http.Client();
+  }) : client = client ?? http.Client(),
+       host = baseUrl.host,
+       port = baseUrl.port,
+       secure = baseUrl.scheme.endsWith('s');
 
   final String apiKey;
   final http.Client client;
@@ -72,6 +73,7 @@ class ApiClient {
     final response = await client.put(
       _makeUrl('/sync/$storageToken'),
       headers: {
+        'x-modified-at': DateTime.now().toIso8601String(),
         'x-api-key': apiKey,
         if (isPrivate && authenticationToken != null)
           'x-authentication-token': authenticationToken!,

@@ -1,0 +1,19 @@
+name: blocsync
+description: A package for syncing data between multiple devices
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  bloc: ^9.0.0
+  http: ^1.4.0
+  hydrated_bloc: ^10.0.0
+  meta: ^1.16.0
+  web_socket_client: ^0.2.1
+
+dev_dependencies:
+  mocktail: ^1.0.4
+  test: ^1.25.8
+  very_good_analysis: ^6.0.0

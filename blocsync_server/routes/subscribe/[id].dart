@@ -2,11 +2,11 @@
 
 import 'dart:convert';
 
+import 'package:blocsync_server/src/user_middleware.dart';
 import 'package:broadcast_bloc/broadcast_bloc.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
 import 'package:state_storage/state_storage.dart';
-import 'package:synced_bloc_server/src/user_middleware.dart';
 
 class StatesBloc extends BroadcastCubit<Map<String, dynamic>?> {
   StatesBloc(this.id, this.storage) : super(null) {

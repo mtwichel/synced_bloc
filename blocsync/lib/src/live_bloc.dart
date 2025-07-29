@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
+import 'package:blocsync/blocsync.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:synced_bloc/src/api_client.dart';
-import 'package:synced_bloc/src/local_storage.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 
 abstract class LiveBloc<Event, State> extends Bloc<Event, State> {
@@ -21,15 +20,6 @@ abstract class LiveBloc<Event, State> extends Bloc<Event, State> {
     return _storage!;
   }
 
-  static ApiClient? _apiClient;
-
-  static set apiClient(ApiClient? apiClient) => _apiClient = apiClient;
-
-  static ApiClient get apiClient {
-    if (_apiClient == null) throw Exception('API client not found');
-    return _apiClient!;
-  }
-
   late final WebSocket socket;
   late final StreamSubscription<dynamic> subscription;
 
@@ -42,9 +32,10 @@ abstract class LiveBloc<Event, State> extends Bloc<Event, State> {
     // Fetch from local storage
     try {
       final stateJson = storage.read(storageToken) as Map<dynamic, dynamic>?;
-      _state = stateJson != null
-          ? fromJson(Map<String, dynamic>.from(stateJson))
-          : super.state;
+      _state =
+          stateJson != null
+              ? fromJson(Map<String, dynamic>.from(stateJson))
+              : super.state;
     } catch (error, stackTrace) {
       this.onError(error, stackTrace);
       _state = super.state;
@@ -55,7 +46,7 @@ abstract class LiveBloc<Event, State> extends Bloc<Event, State> {
   }
 
   Future<void> _subscribeToRemote() async {
-    socket = apiClient.connect(storageToken);
+    socket = BlocSyncConfig.apiClient.connect(storageToken);
     subscription = socket.messages.listen((message) {
       if (message is! String) return;
       final json = jsonDecode(message) as Map<String, dynamic>;

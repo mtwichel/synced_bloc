@@ -1,5 +1,5 @@
-name: synced_bloc_server
-description: A new Dart Frog application
+name: blocsync_server
+description: A server for the blocsync package
 version: 1.0.0+1
 publish_to: none
 

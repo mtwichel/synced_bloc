@@ -1,4 +1,4 @@
-name: synced_bloc_example
+name: blocsync_example
 description: "A new Flutter project."
 publish_to: "none"
 version: 0.1.0
@@ -11,8 +11,8 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.1.1
   path_provider: ^2.1.5
-  synced_bloc:
-    path: ../synced_bloc
+  blocsync:
+    path: ../blocsync
 
 dev_dependencies:
   flutter_test:

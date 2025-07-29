@@ -1,5 +1,5 @@
+import 'package:blocsync/src/synced_mixin.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:synced_bloc/src/synced_mixin.dart';
 
 abstract class SyncedBloc<Event, State> extends Bloc<Event, State>
     with HydratedMixin<State>, SyncedMixin<State> {
