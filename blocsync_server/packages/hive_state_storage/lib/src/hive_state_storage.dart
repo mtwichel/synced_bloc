@@ -6,16 +6,14 @@ import 'package:state_storage/state_storage.dart';
 /// {@endtemplate}
 class HiveStateStorage implements StateStorage {
   /// {@macro hive_state_storage}
-  HiveStateStorage({required String path}) {
-    initialize(path);
-  }
+  HiveStateStorage();
 
-  late final Box<Map<String, dynamic>> _box;
+  late final Box<Map<dynamic, dynamic>> _box;
 
   /// Initialize the Hive state storage.
   Future<void> initialize(String path) async {
     Hive.init(path);
-    _box = await Hive.openBox<Map<String, dynamic>>(path);
+    _box = await Hive.openBox<Map<dynamic, dynamic>>(path);
   }
 
   @override
@@ -30,7 +28,7 @@ class HiveStateStorage implements StateStorage {
 
   @override
   Future<Map<String, dynamic>?> get(String key) async {
-    return _box.get(key);
+    return _box.get(key)?.cast<String, dynamic>();
   }
 
   @override

@@ -6,18 +6,16 @@ import 'package:state_storage/state_storage.dart';
 /// {@endtemplate}
 class RedisStateStorage implements StateStorage {
   /// {@macro redis_state_storage}
-  RedisStateStorage({
-    required String host,
-    required int port,
-    String? password,
-  }) {
-    initialize(host, port, password);
-  }
+  RedisStateStorage();
 
   late final Command _command;
 
   /// Initialize the Redis state storage.
-  Future<void> initialize(String host, int port, String? password) async {
+  Future<void> initialize({
+    required String host,
+    required int port,
+    String? password,
+  }) async {
     final client = RedisConnection();
     _command = await client.connect(host, port);
     if (password != null) {

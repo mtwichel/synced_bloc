@@ -12,7 +12,6 @@ dependencies:
   dart_frog_web_socket: ^1.0.0
   hive_state_storage:
     path: packages/hive_state_storage
-  path: ^1.9.1
   redis_state_storage:
     path: packages/redis_state_storage
   state_storage:
