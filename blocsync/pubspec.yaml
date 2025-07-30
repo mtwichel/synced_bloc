@@ -1,5 +1,5 @@
 name: blocsync
-description: A package for syncing data between multiple devices
+description: A bloc that syncs its state to the cloud.
 version: 0.1.0+1
 publish_to: none
 

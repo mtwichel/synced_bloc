@@ -1,0 +1,9 @@
+{
+  "label": "Authentication",
+  "position": 3,
+  "link": {
+    "title": "Authentication 🔐",
+    "type": "generated-index",
+    "description": "Learn how to configure Blocsync with your authentication."
+  }
+}

@@ -10,12 +10,10 @@ dependencies:
   broadcast_bloc: ^0.1.0-dev.2
   dart_frog: ^1.1.0
   dart_frog_web_socket: ^1.0.0
-  hive_state_storage:
-    path: packages/hive_state_storage
-  redis_state_storage:
-    path: packages/redis_state_storage
-  state_storage:
-    path: packages/state_storage
+  hive_ce: ^2.11.3
+  redis: ^4.0.0
+  http: ^1.2.0
+  pointycastle: ^4.0.0
 
 dev_dependencies:
   mocktail: ^1.0.3

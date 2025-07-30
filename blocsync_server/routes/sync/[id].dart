@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:blocsync_server/src/user_middleware.dart';
+import 'package:blocsync_server/blocsync_server.dart';
 import 'package:dart_frog/dart_frog.dart';
-import 'package:state_storage/state_storage.dart';
 
 Future<Response> onRequest(RequestContext context, String id) {
   return switch (context.request.method) {
