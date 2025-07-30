@@ -8,7 +8,7 @@ title: 🤫 Private Blocs
 Private states ensure that each user has their own isolated data that only they can access. This is essential for personal data like user preferences, private notes, or any sensitive information.
 
 :::warning Authentication Required
-Private blocs will not sync until the user is authenticated. Make sure your authentication flow is complete using creating private blocs. For information on setting up authentication, see [Authentication](/docs/authentication)
+Private blocs will not sync until the user is authenticated. Make sure your authentication flow is complete using creating private blocs. For information on setting up authentication, see [Firebase Auth](/docs/authentication/firebase-auth) or [Supabase Auth](/docs/authentication/supabase-auth)
 :::
 
 ## Public vs Private States
