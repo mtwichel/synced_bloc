@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:blocsync_server/blocsync_server.dart';
 import 'package:redis/redis.dart';
 
@@ -36,11 +38,14 @@ class RedisStateStorage implements StateStorage {
   @override
   Future<Map<String, dynamic>?> get(String key) async {
     final result = await _command.send_object(['GET', key]);
-    return result as Map<String, dynamic>?;
+    if (result == null) {
+      return null;
+    }
+    return Map<String, dynamic>.from(jsonDecode(result as String) as Map);
   }
 
   @override
   Future<void> put(String key, Map<String, dynamic> value) async {
-    await _command.send_object(['SET', key, value]);
+    await _command.send_object(['SET', key, jsonEncode(value)]);
   }
 }
