@@ -15,6 +15,8 @@ Handler middleware(Handler handler) {
 
   if (authenticationEnabled) {
     newHandler = newHandler.use(jwtMiddleware());
+  } else {
+    newHandler = newHandler.use(provider<UserId>((_) => null));
   }
 
   return newHandler;
