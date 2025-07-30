@@ -1,4 +1,4 @@
-name: main
+name: Verify Docs
 
 on: pull_request
 

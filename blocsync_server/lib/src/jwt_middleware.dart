@@ -1,13 +1,15 @@
 import 'package:blocsync_server/src/jwt_validator.dart';
 import 'package:dart_frog/dart_frog.dart';
 
+/// The type of the user ID.
 typedef UserId = String?;
 
 /// A middleware that validates JWT tokens from the Authorization header.
 ///
 /// Expects tokens in the format: `Authorization: Bearer <token>`
 ///
-/// On successful validation, provides the JWT claims and user ID to the request context.
+/// On successful validation, provides the JWT claims and user ID to the
+/// request context.
 /// On failure, returns a 401 Unauthorized response.
 Middleware jwtMiddleware({JwtValidator? validator}) {
   // Use provided validator or create one from environment

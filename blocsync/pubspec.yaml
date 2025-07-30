@@ -1,10 +1,13 @@
 name: blocsync
 description: A bloc that syncs its state to the cloud.
-version: 0.1.0+1
-publish_to: none
+version: 0.0.1-dev.1
+publish_to: https://pub.dev
+homepage: https://blocsync.dev
+repository: https://github.com/mtwichel/blocsync
+issue_tracker: https://github.com/mtwichel/blocsync/issues
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.0.0
 
 dependencies:
   bloc: ^9.0.0

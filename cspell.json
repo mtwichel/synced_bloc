@@ -9,6 +9,7 @@
     "Hmac",
     "mocktail",
     "mtwichel",
+    "pointycastle",
     "secp"
   ],
   "ignoreWords": [],

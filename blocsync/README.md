@@ -9,6 +9,8 @@ A package for syncing data between multiple devices.
 
 ## Usage
 
+Visit the [docs](https://docs.blocsync.dev) for information, but here's a quick example:
+
 ```dart
 import 'package:blocsync/blocsync.dart';
 
