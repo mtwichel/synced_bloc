@@ -12,6 +12,9 @@ jobs:
   build:
     name: Build Docs
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,6 +37,9 @@ jobs:
   deploy:
     name: Deploy Docs to GitHub Pages
     needs: build
+    defaults:
+      run:
+        working-directory: docs
 
     permissions:
       pages: write
