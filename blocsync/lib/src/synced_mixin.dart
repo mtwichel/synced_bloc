@@ -8,7 +8,13 @@ mixin SyncedMixin<State> on BlocBase<State> {
       storageToken,
       isPrivate: isPrivate,
     );
-    final state = fromJson(json)!;
+    if (json == null) {
+      return;
+    }
+    final state = fromJson(json);
+    if (state == null) {
+      return;
+    }
     emit(state);
   }
 

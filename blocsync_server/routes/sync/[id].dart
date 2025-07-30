@@ -21,6 +21,9 @@ Future<Response> _onGet(RequestContext context, String id) async {
     key = '$userId:$id';
   }
   final json = await storage.get(key);
+  if (json == null) {
+    return Response(statusCode: HttpStatus.notFound);
+  }
   return Response.json(body: json);
 }
 

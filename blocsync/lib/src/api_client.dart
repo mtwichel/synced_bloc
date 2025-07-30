@@ -9,10 +9,10 @@ class ApiClient {
     required Uri baseUrl,
     http.Client? client,
     this.authenticationToken,
-  }) : client = client ?? http.Client(),
-       host = baseUrl.host,
-       port = baseUrl.port,
-       secure = baseUrl.scheme.endsWith('s');
+  })  : client = client ?? http.Client(),
+        host = baseUrl.host,
+        port = baseUrl.port,
+        secure = baseUrl.scheme.endsWith('s');
 
   final String apiKey;
   final http.Client client;
@@ -37,7 +37,7 @@ class ApiClient {
     );
   }
 
-  Future<Map<String, dynamic>> fetch(
+  Future<Map<String, dynamic>?> fetch(
     String storageToken, {
     required bool isPrivate,
   }) async {
@@ -53,7 +53,9 @@ class ApiClient {
           'x-authentication-token': authenticationToken!,
       },
     );
-
+    if (response.statusCode == 404) {
+      return null;
+    }
     if (response.statusCode != 200) {
       throw Exception('Failed to fetch data from server');
     }
